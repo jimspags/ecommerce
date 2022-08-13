@@ -1,0 +1,13 @@
+Config
+$config['base_url'] = 'http://localhost/ecommerce/';
+$config['index_page'] = '';
+    Security
+        $config['global_xss_filtering'] = TRUE;
+        $config['csrf_protection'] = TRUE;
+        $config['csrf_regenerate'] = FALSE; // For ajax to work on forms multiple times
+        $config['encryption_key'] = 'village88';
+
+
+Autoload
+$autoload['libraries'] = array('database', 'session', 'form_validation');
+$autoload['helper'] = array('url');
