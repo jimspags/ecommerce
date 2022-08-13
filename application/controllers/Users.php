@@ -2,6 +2,10 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Users extends CI_Controller {
+	public function __construct() {
+		parent::__construct();
+		$this->load->model("User");
+	}
 
 	/**
 	 * Index Page for this controller.
@@ -49,7 +53,20 @@ class Users extends CI_Controller {
 
 	// Register process
 	public function register_process() {
-		echo "this is the registe process function";
+
+		if($this->User->validate_register()) { // Check if inputs are valid
+			if($this->User->insert_user($this->input->post(NULL, TRUE)) == TRUE) { // Insert into database
+				$this->session->set_flashdata("success", "Account " . $this->input->post("email", TRUE) . " is created");
+				redirect(base_url() . "register");
+			}
+		} else {
+			$this->session->set_flashdata("errors", validation_errors());
+
+			// Retain input value fields after invalid form inputs
+			$this->session->set_flashdata("input_fields",$this->input->post(NULL, TRUE));
+			
+			redirect(base_url() . "register");
+		}
 	}
 
 

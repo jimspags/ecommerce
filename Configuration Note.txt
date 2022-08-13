@@ -7,7 +7,13 @@ $config['index_page'] = '';
         $config['csrf_regenerate'] = FALSE; // For ajax to work on forms multiple times
         $config['encryption_key'] = 'village88';
 
-
 Autoload
 $autoload['libraries'] = array('database', 'session', 'form_validation');
 $autoload['helper'] = array('url');
+
+
+Form Validations
+Register
+    first and last name => required, minimum of 2, alpha
+    email address => required, valid email
+    password => shoud atleast 8 characters

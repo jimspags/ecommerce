@@ -61,6 +61,7 @@ $route['login/authenticate'] = "users/authenticate";
 // Register page
 $route['register'] = "users/register";
 // Register process
+$route['register/process'] = "users/register_process";
 
 // Logoff
 $route['logoff'] = "users/logoff";
