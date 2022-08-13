@@ -45,7 +45,7 @@
             <a href="<?= base_url() ?>cart">Shopping Cart (5)</a>
         </header>  
         <main>
-            <a href="./catalog.html">Go Back</a>
+            <a href="<?= base_url() ?>">Go Back</a>
             <h1>Magnifying Glass</h1>
             <figure>
                 <img class="mini-image" src="img/magnifying_glass.png"/>

@@ -19,11 +19,6 @@ class Users extends CI_Controller {
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
 
-
-	public function index() {
-		$this->load->view("/customers/catalog");
-	}
-
 	// Login
 	public function login() {
 		$this->load->view('/users/login');
@@ -31,11 +26,12 @@ class Users extends CI_Controller {
 
 	// Login process
 	public function authenticate() {
+		// Authenticate
 		$is_admin = 1;
 		if($is_admin == 1) {
-			redirect("admin/dashboard");
+			redirect("dashboard");
 		} else if ($is_admin == 0) {
-			redirect("/catalog");
+			redirect("catalog");
 		}
 	}
 
@@ -51,10 +47,12 @@ class Users extends CI_Controller {
 		$this->load->view("/users/register");
 	}
 
-	// Admin
-	public function admin_dashboard() { // Admin index page
-		$this->load->view("/admin/dashboard_orders");
+	// Register process
+	public function register_process() {
+		echo "this is the registe process function";
 	}
+
+
 
 
 }

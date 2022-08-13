@@ -49,11 +49,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'users';
+$route['default_controller'] = 'customers';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-// Users
 // Login page
 $route['login'] = "users/login";
 // Login process
@@ -67,13 +66,17 @@ $route['register'] = "users/register";
 $route['logoff'] = "users/logoff";
 
 // Admin
-$route['admin/dashboard'] = "users/admin_dashboard";
+$route['dashboard'] = "admins/index";
+$route['dashboard/products'] = "admins/dashboard_products";
+$route['dashboard/order_detail/(:num)'] = "admins/order_details/$1";
+
 
 // Customers
 $route['profile'] = "customers/edit_profile";
 $route['cart'] = "customers/shopping_cart";
 $route['product/(:num)'] = "customers/product_details/$1";
 $route['order_history'] = "customers/order_history";
+$route['order_history_detail/(:num)'] = "customers/order_history_details/$1";
 
 
 

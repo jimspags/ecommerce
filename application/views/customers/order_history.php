@@ -28,7 +28,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><a href="./order_history_details.html">101</a></td>
+                    <td><a href="<?= base_url() ?>order_history_detail/1">101</a></td>
                     <td>Marlon</td>
                     <td>9/12/2020</td>
                     <td>456 Steve Street, Marikina City</td>

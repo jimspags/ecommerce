@@ -10,8 +10,8 @@
     <body>
         <header>
             <h2>Dashboard</h2>
-            <a href="./dashboard_orders.html">Orders</a>
-            <a href="./dashboard_products.html">Products</a>
+            <a href="<?= base_url() ?>dashboard">Orders</a>
+            <a href="<?= base_url() ?>dashboard/products">Products</a>
             <a href="<?= base_url() ?>/logoff">Logoff</a>
         </header>  
         <nav>
@@ -39,7 +39,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><a href="./order_details.html">101</a></td>
+                    <td><a href="<?= base_url() ?>dashboard/order_detail/1">101</a></td>
                     <td>Marlon</td>
                     <td>9/12/2020</td>
                     <td>456 Steve Street, Marikina City</td>

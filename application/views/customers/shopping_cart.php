@@ -82,7 +82,7 @@
                 </tbody>
             </table>
             <p>Total: $49.96</p>
-            <button type="button" onclick="location.href='./catalog.html';">Continue Shopping</button>
+            <button type="button" onclick="location.href='<?= base_url() ?>';">Continue Shopping</button>
         </section>
         <form>
             <h3>Shipping Information</h3>
