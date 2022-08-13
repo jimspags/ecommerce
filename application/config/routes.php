@@ -54,13 +54,26 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 // Users
-// Login
-$route['login'] = "users/index";
+// Login page
+$route['login'] = "users/login";
+// Login process
 $route['login/authenticate'] = "users/authenticate";
 
-
-
-// Register
+// Register page
 $route['register'] = "users/register";
+// Register process
+
+// Logoff
+$route['logoff'] = "users/logoff";
+
+// Admin
+$route['admin/dashboard'] = "users/admin_dashboard";
+
+// Customers
+$route['profile'] = "customers/edit_profile";
+$route['cart'] = "customers/shopping_cart";
+$route['product/(:num)'] = "customers/product_details/$1";
+$route['order_history'] = "customers/order_history";
+
 
 

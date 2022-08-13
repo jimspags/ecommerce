@@ -17,7 +17,7 @@
 
             <label for="password">Password:</label>
             <input type="password" name="password">
-        
+            
             <input type="submit" value="Signin">
             <a href="register">Don't have an account? Register</a>
         </form>
