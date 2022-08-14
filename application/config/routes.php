@@ -55,8 +55,10 @@ $route['translate_uri_dashes'] = FALSE;
 
 // Login page
 $route['login'] = "users/login";
+
 // Login process
-$route['login/authenticate'] = "users/authenticate";
+$route['login/authenticate'] = "users/login_process";
+
 
 // Register page
 $route['register'] = "users/register";

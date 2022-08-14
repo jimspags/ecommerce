@@ -29,20 +29,36 @@ class Users extends CI_Controller {
 	}
 
 	// Login process
-	public function authenticate() {
-		// Authenticate
-		$is_admin = 1;
-		if($is_admin == 1) {
-			redirect("dashboard");
-		} else if ($is_admin == 0) {
-			redirect("catalog");
+	public function login_process() {
+		if($this->User->validate_login($this->input->post(NULL, TRUE))) { // Validate the user input
+
+			$authenticate_result = $this->User->authenticate_login($this->input->post(NULL, TRUE));
+			if($authenticate_result == "user_not_found") { // User not found
+				$this->session->set_flashdata("errors", "User does not exists");
+				redirect(base_url() . "login");
+			} else if($authenticate_result == "invalid_credentials") { // User found but invalid credentials
+				$this->session->set_flashdata("errors", "Invalid credentials");
+				redirect(base_url() . "login");
+			}else if($authenticate_result == "authenticated") { // User authenticated
+				if($this->session->userdata("is_admin") == "1") {
+					redirect(base_url() . "dashboard");
+				} else {
+					redirect(base_url());
+				}
+			}
+			
+		} else {
+			$this->session->set_flashdata("errors", validation_errors());
+			$this->session->set_flashdata("input_fields", array("email" => $this->input->post("email", TRUE)));
+			redirect(base_url() . "login");
 		}
 	}
 
+
 	// Logoff user
 	public function logoff() {
-		// Destroy session
-		redirect("/login");
+		$this->session->sess_destroy();
+		redirect(base_url());
 	}
 
 	
@@ -61,10 +77,8 @@ class Users extends CI_Controller {
 			}
 		} else {
 			$this->session->set_flashdata("errors", validation_errors());
-
 			// Retain input value fields after invalid form inputs
 			$this->session->set_flashdata("input_fields",$this->input->post(NULL, TRUE));
-			
 			redirect(base_url() . "register");
 		}
 	}
