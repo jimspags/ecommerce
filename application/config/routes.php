@@ -76,6 +76,8 @@ $route['dashboard/order_detail/(:num)'] = "admins/order_details/$1";
 
 // Customers
 $route['profile'] = "customers/edit_profile";
+$route['profile/edit_password'] = "customers/edit_password";
+
 $route['cart'] = "customers/shopping_cart";
 $route['product/(:num)'] = "customers/product_details/$1";
 $route['order_history'] = "customers/order_history";

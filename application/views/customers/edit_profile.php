@@ -14,9 +14,23 @@
                 $("#message-dialog").dialog({
                     autoOpen: false
                 });
+
                 $(document).on('click', 'input[type="submit"]', function() {
-                    $('#message-dialog').html($(this).attr('message'));
-                    $("#message-dialog").dialog("open");
+                    let message = $(this).attr("message"); // Get message from the button
+                    $.post($(this).parent().attr("action"), $(this).parent().serialize(), function(data) {
+                        $("#errors").html("");
+                        $("#form_password")[0].reset();
+                        if(JSON.parse(data).status == 400) {
+                            $("#errors").html(JSON.parse(data).errors);
+                        }
+
+                        if(JSON.parse(data).status == 200) {
+                            $('#message-dialog').html(message);
+                            $("#message-dialog").dialog("open");
+                        }
+
+                        
+                    });
                     return false;
                 });
             });
@@ -30,9 +44,11 @@
             <a href="<?= base_url() ?>cart">Shopping Cart (5)</a>
         </header>  
         <div id="message-dialog"></div>
+        <div id="errors"></div>
+
         <fieldset>            
             <legend>Edit Password</legend>
-            <form>
+            <form action="<?= base_url() ?>profile/edit_password" method="POST" id="form_password">
                 <label for="old_password">Old Password:</label>
                 <input type="password" name="old_password" />
     
@@ -41,7 +57,7 @@
     
                 <label for="confirm_new_password">Confirm New Password:</label>
                 <input type="password" name="confirm_new_password" />
-
+                <input type="hidden" name="<?= $this->security->get_csrf_token_name() ?>" value="<?= $this->security->get_csrf_hash() ?>">
                 <input type="submit" message="Password successfully updated!" value="Save">
             </form>
         </fieldset>
