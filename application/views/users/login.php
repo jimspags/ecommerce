@@ -15,7 +15,7 @@
             <h1>Login</h1>
    
             <label for="email">Email address:</label>
-            <input type="text" name="email" value="<?= isset($this->session->flashdata("input_fields")['email']) ? $this->session->flashdata("input_fields")['email'] : '' ?>">
+            <input type="text" name="email" value="<?= $this->session->flashdata("input_email") ?>">
 
             <label for="password">Password:</label>
             <input type="password" name="password">

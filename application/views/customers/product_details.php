@@ -40,10 +40,22 @@
         </div>
         <header>
             <a href="<?= base_url() ?>">Dojo eCommerce</a>
+
+<?php
+    if($this->session->userdata("is_logged_in") == "1") {
+?>
             <a href="<?= base_url() ?>logoff">Log off</a>
             <a href="<?= base_url() ?>profile">Settings</a>
+<?php
+    } else {
+?>
+            <a href="<?= base_url() ?>login">Login</a>
+<?php
+    }
+?>
             <a href="<?= base_url() ?>cart">Shopping Cart (5)</a>
-        </header>  
+
+        </header> 
         <main>
             <a href="<?= base_url() ?>">Go Back</a>
             <h1>Magnifying Glass</h1>

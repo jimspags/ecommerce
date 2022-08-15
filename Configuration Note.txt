@@ -14,6 +14,18 @@ $autoload['helper'] = array('url');
 
 Form Validations
 Register
-    first and last name => required, minimum of 2, alpha
+    first and last name => required, minimum of 2
     email address => required, valid email
     password => shoud atleast 8 characters
+
+Edit password
+    Old password => required, correct current password
+    New, confirm password => required, matched and atleast 8 characters
+
+Default Shipping
+    first name, last name => required, minimum of 2
+    address => required
+    address_2 => required
+    city => required
+    state => required
+    zipcode => required

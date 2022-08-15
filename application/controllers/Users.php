@@ -34,10 +34,10 @@ class Users extends CI_Controller {
 
 			$authenticate_result = $this->User->authenticate_login($this->input->post(NULL, TRUE));
 			if($authenticate_result == "user_not_found") { // User not found
-				$this->session->set_flashdata("errors", "User does not exists");
+				$this->session->set_flashdata(array("errors" => "User does not exists", "input_email" => $this->input->post("email", TRUE)));
 				redirect(base_url() . "login");
 			} else if($authenticate_result == "invalid_credentials") { // User found but invalid credentials
-				$this->session->set_flashdata("errors", "Invalid credentials");
+				$this->session->set_flashdata(array("errors" => "Invalid credentials", "input_email" => $this->input->post("email", TRUE)));
 				redirect(base_url() . "login");
 			}else if($authenticate_result == "authenticated") { // User authenticated
 				if($this->session->userdata("is_admin") == "1") {
@@ -48,8 +48,7 @@ class Users extends CI_Controller {
 			}
 			
 		} else {
-			$this->session->set_flashdata("errors", validation_errors());
-			$this->session->set_flashdata("input_fields", array("email" => $this->input->post("email", TRUE)));
+			$this->session->set_flashdata(array("errors" => validation_errors(), "input_email" => $this->input->post("email", TRUE)));
 			redirect(base_url() . "login");
 		}
 	}

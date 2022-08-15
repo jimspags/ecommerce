@@ -20,6 +20,7 @@
                 autoOpen: false,
                 title: "Edit Product - ID 2"
             });
+            
             $("#form-add-dialog").dialog({
                 autoOpen: false,
                 title: "Add new Product"
@@ -49,11 +50,30 @@
                     $("input.category").attr("readonly", "true");
                 }, 2000);
             });
+
             //Update product in modal
             $(document).on('submit', "form", function() {
                 show_hide_loader();
+                $.post($(this).attr("action"), $(this).serialize(), function(data) {
+                    $("#errors").html("");
+                    if(JSON.parse(data).status == 400) {
+                        $("#errors").html(JSON.parse(data).errors);
+                    } else {
+                        $(".form-dialog").dialog("close");
+                        console.log(JSON.parse(data))
+                    }
+                });
                 return false;
             });
+
+            // Add Category Select manipulation
+            $(document).on("click", ".category", function() {
+                $("input[name='category']").val($(this).attr("value"));
+                console.log($("input[name='category']").val());
+                $("summary").html($("input[name='category']").val() + "<span>▼</span>");
+                $("summary").click();
+            });
+
             //Cancel in product modal
             $(document).on('click', "button#cancel", function() {
                 $(".form-dialog").dialog("close");
@@ -73,7 +93,7 @@
     <body> 
         <div class="form-dialog" id="form-edit-dialog">
             <div class="loader-dialog">
-                <img src="img/ajax-loader.gif"/>
+                <img src="<?= base_url() ?>assets/img/ajax-loader.gif"/>
             </div>
             <form action="#" method="POST">
 
@@ -88,14 +108,14 @@
                     <summary>Tools<span>▼</span></summary>
                     <div>
                         <section>
-                            <input class="category" type="text" value="Hardware" readonly/>
-                            <img class="edit" src="img/pencil.png"/>
-                            <img class="remove" title="Hardware" src="img/trash-can.png"/>
+                            <input class="category" type="text" value="Hardware" name="category" readonly/>
+                            <img class="edit" src="<?= base_url() ?>assets/img/pencil.png"/>
+                            <img class="remove" title="Hardware" src="<?= base_url() ?>assets/img/trash-can.png"/>
                         </section>
                         <section>
-                            <input class="category" type="text" value="Tactical" readonly/>
-                            <img class="edit" src="img/pencil.png"/>
-                            <img class="remove" title="Tactical" src="img/trash-can.png"/>
+                            <input class="category" type="text" value="Tactical" name="category" readonly/>
+                            <img class="edit" src="<?= base_url() ?>assets/img/pencil.png"/>
+                            <img class="remove" title="Tactical" src="<?= base_url() ?>assets/img/trash-can.png"/>
                         </section>
                     </div>
                 </details>
@@ -142,10 +162,13 @@
 
 
         <div class="form-dialog" id="form-add-dialog">
+            <div id="errors"></div>
+
             <div class="loader-dialog">
-                <img src="img/ajax-loader.gif"/>
+                <img src="<?= base_url() ?>assets/img/ajax-loader.gif"/>
             </div>
-            <form action="#" method="POST">
+
+            <form action="<?= base_url() ?>add_product" method="POST">
                 <label for="name">Name:</label>
                 <input type="text" name="name"/>
         
@@ -156,30 +179,34 @@
                 <details>
                     <summary>Tools<span>▼</span></summary>
                     <div>
+<?php
+    foreach($categories as $category) {
+?>
                         <section>
-                            <input class="category" type="text" value="Hardware" readonly/>
+                            <input class="category" type="text" value="<?= $category['category_name'] ?>" readonly/>
                             <img class="edit" src="<?= base_url() ?>assets/img/pencil.png"/>
-                            <img class="remove" title="Hardware" src="<?= base_url() ?>assets/img/trash-can.png"/>
+                            <img class="remove" title="<?= $category['category_name'] ?>" src="<?= base_url() ?>assets/img/trash-can.png"/>
                         </section>
-                        <section>
-                            <input class="category" type="text" value="Tactical" readonly/>
-                            <img class="edit" src="img/pencil.png"/>
-                            <img class="remove" title="Tactical" src="<?= base_url() ?>assets/img/trash-can.png"/>
-                        </section>
+<?php
+    }
+?>
                     </div>
                 </details>
-        
+                <input type="hidden" name="category">
+
                 <label for="new_category">or add new category:</label>
                 <input type="text" name="new_category"/>
         
                 <p>Images:</p>
                 <label for="upload">Upload</label>        
-                <input type="file" id="upload" hidden/>
+                <input type="file" id="upload_image" hidden/>
                 <ul></ul>
 
                 <button type="button" id="cancel">Cancel</button>
                 <button type="button" id="preview">Preview</button>
-                <input type="submit" value="Update"/>
+                <input type="hidden" name="<?= $this->security->get_csrf_token_name() ?>" value="<?= $this->security->get_csrf_hash() ?>">
+
+                <input type="submit" value="Add"/>
             </form>
         </div>
 
@@ -191,7 +218,7 @@
         </header>  
         <nav>
             <div>
-                <img src='./img/magnifying_glass.png' />
+                <img src='<?= base_url() ?>assets/img/magnifying_glass.png' />
                 <input type="search" name="search_keyword" placeholder="search">
             </div>
             <button>Add New Product</button>
@@ -208,28 +235,23 @@
                 </tr>                
             </thead>
             <tbody>
+<?php
+    foreach($products as $product) {
+?>
                 <tr>
-                    <td><img src="img/magnifying_glass.png"></td>
-                    <td>1</td>
-                    <td>Magnifying Glass</td>
-                    <td>201</td>
-                    <td>1000</td>
+                    <td><img src="<?= base_url() ?>assets/img/magnifying_glass.png"></td>
+                    <td><?= $product['id'] ?></td>
+                    <td><?= $product['product_name'] ?></td>
+                    <td>FIXED</td>
+                    <td>FIXED</td>
                     <td> 
                         <button id="edit">edit</button>
                         <button id="delete" title="Magnifying Glass" action="./delete/1">delete</a>
                     </td>
                 </tr>
-                <tr>
-                    <td><img src="img/magnifying_glass.png"></td>
-                    <td>2</td>
-                    <td>Magnifying Glass (lg)</td>
-                    <td>450</td>
-                    <td>600</td>
-                    <td> 
-                        <button id="edit">edit</button>
-                        <button id="delete" title="Magnifying Glass (lg)" action="./delete/1">delete</a>
-                    </td>
-                </tr>
+<?php
+    }
+?>
             </tbody>
         </table>
         <footer>

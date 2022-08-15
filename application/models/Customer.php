@@ -3,7 +3,7 @@
         // Edit passwords
         public function validate_passwords() {
             $this->form_validation->set_rules("old_password", "Old Password", "required");
-            $this->form_validation->set_rules("new_password", "New Password", "required");
+            $this->form_validation->set_rules("new_password", "New Password", "required|min_length[8]");
             $this->form_validation->set_rules("confirm_new_password", "Confirm Password", "required|matches[new_password]");
 
             if($this->form_validation->run() == FALSE) {

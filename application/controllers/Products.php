@@ -1,8 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Admins extends CI_Controller {
-	public function __construct() {
+class Products extends CI_Controller {
+	public function __construct()
+	{
 		parent::__construct();
 		$this->load->model("Product");
 	}
@@ -22,18 +23,16 @@ class Admins extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
-	public function index() {
-		$this->load->view("admins/dashboard_orders");
-	}
 
-	public function dashboard_products() {
-		$all_categories = $this->Product->all_categories();
-		$all_products = $this->Product->all_products();
-		$this->load->view("admins/dashboard_products", array("categories" => $all_categories, "products" => $all_products));
-	}
+	public function add_product() {
+		$response = array();
+		if($this->Product->validate_product() == FALSE) {
+			$response = array("status" => 400, "errors" => validation_errors());
+		} else {
+			$category_id = $this->Product->insert_product($this->input->post(NULL, TRUE));
+			$response = array("status" => 200);
+		}
 
-	public function order_details($order_id) {
-		$this->load->view("admins/order_details");
+		echo json_encode($response);
 	}
-
 }
