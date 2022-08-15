@@ -1,0 +1,8 @@
+[33me4d64d2[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m Implement: Add new product(name,descript,category)
+[33m99b5816[m[33m ([m[1;31morigin/main[m[33m)[m Implement: Change password customer
+[33m3d276f9[m Implement: Login customer/admin
+[33md5d2fa2[m Implement: Customer Register
+[33m81d35f8[m Add: clickable prototype
+[33m2e045be[m Integrate: Admin's Clickable Prototype with routes
+[33m32c035f[m Integrate: Customer's Clickable Prototype with routes
+[33ma61928c[m First configuration: Autoload, Config

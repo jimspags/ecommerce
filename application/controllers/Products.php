@@ -29,10 +29,16 @@ class Products extends CI_Controller {
 		if($this->Product->validate_product() == FALSE) {
 			$response = array("status" => 400, "errors" => validation_errors());
 		} else {
-			$category_id = $this->Product->insert_product($this->input->post(NULL, TRUE));
+			$this->Product->insert_product($this->input->post(NULL, TRUE));
 			$response = array("status" => 200);
 		}
-
 		echo json_encode($response);
+	}
+
+
+	public function delete_product($id) {
+		if($this->Product->delete_product($id) == TRUE) {
+			echo json_encode(array("status" => 200));
+		}
 	}
 }

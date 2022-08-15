@@ -25,8 +25,8 @@
             // Add the new category in the database and get the ID
             if(!empty($post['new_category'])) {
                 $query_category = "INSERT INTO product_categories(category_name, created_at, updated_at) VALUES(?, ?, ?)";
-                $this->db->query($query_category, array($post['new_category'], date("Y-m-d, H:i:s"), date("Y-m-d, H:i:s")));
-                $category_id = $this->db->insert_id();
+                $this->db->query($query_category, array($post['category'], date("Y-m-d, H:i:s"), date("Y-m-d, H:i:s")));
+                $category_id = $this->db->insert_id(); 
             } else {
                 $query_find_category = "SELECT id FROM product_categories WHERE category_name = ?";
                 $result = $this->db->query($query_find_category, array($post['category']))->row_array();
@@ -37,11 +37,19 @@
             $query_add_product = "INSERT INTO products(user_id, product_category_id, product_name, description, created_at, updated_at) VALUES(?, ?, ?, ?, ?, ?)";
             $this->db->query($query_add_product, array($this->session->userdata("user_id"), $category_id, $post['name'], $post['description'], date("Y-m-d, H:i:s"), date("Y-m-d, H:i:s")));
 
-            // Insert image path on database
-            $target_dir = base_url() . "assets/img/products/";
-            $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-
+            return true;
         }
+
+
+
+
+        public function delete_product($id) {
+            $query = "DELETE FROM products WHERE id = ?";
+		    if($this->db->query($query, array($id))) {
+                return TRUE;
+            }
+        }
+
 
         // Fetch all categories
         public function all_categories() {

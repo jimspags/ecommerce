@@ -51,8 +51,9 @@
                 }, 2000);
             });
 
-            //Update product in modal
+            //Add product in modal
             $(document).on('submit', "form", function() {
+
                 show_hide_loader();
                 $.post($(this).attr("action"), $(this).serialize(), function(data) {
                     $("#errors").html("");
@@ -63,6 +64,7 @@
                         console.log(JSON.parse(data))
                     }
                 });
+                
                 return false;
             });
 
@@ -82,13 +84,18 @@
             $(document).on('click', "button#preview", function() {
                 window.open('product_details.html', '_blank');
             });
+
             //Product or Category delete
             $(document).on('click', "button#delete, img.remove", function() {
                 if (confirm($(this).attr('title') + " will be deleted. Click to confirm.")) {
+                    $.get($(this).attr("action"), function(data) {
+                        console.log(data);
+                    })
                     alert($(this).attr('title')+" is now deleted.");
                 }
             });
         });
+        
     </script>
     <body> 
         <div class="form-dialog" id="form-edit-dialog">
@@ -168,7 +175,7 @@
                 <img src="<?= base_url() ?>assets/img/ajax-loader.gif"/>
             </div>
 
-            <form action="<?= base_url() ?>add_product" method="POST">
+            <form action="<?= base_url() ?>dashboard/add_product" method="POST" enctype="multipart/form-data">
                 <label for="name">Name:</label>
                 <input type="text" name="name"/>
         
@@ -199,7 +206,7 @@
         
                 <p>Images:</p>
                 <label for="upload">Upload</label>        
-                <input type="file" id="upload_image" hidden/>
+                <input type="file" id="image_product" name="image_product" hidden/>
                 <ul></ul>
 
                 <button type="button" id="cancel">Cancel</button>
@@ -246,7 +253,7 @@
                     <td>FIXED</td>
                     <td> 
                         <button id="edit">edit</button>
-                        <button id="delete" title="Magnifying Glass" action="./delete/1">delete</a>
+                        <button id="delete" title="<?= $product['product_name'] ?>" action="<?= base_url() ?>dashboard/delete_product/<?= $product['id'] ?>">delete</button>
                     </td>
                 </tr>
 <?php
