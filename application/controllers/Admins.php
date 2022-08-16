@@ -28,9 +28,9 @@ class Admins extends CI_Controller {
 
 	public function dashboard_products() {
 		$all_categories = $this->Product->all_categories();
-		$all_products = $this->Product->all_products();
-		$this->load->view("admins/dashboard_products", array("categories" => $all_categories, "products" => $all_products));
+		$this->load->view("admins/dashboard_products", array("categories" => $all_categories));
 	}
+
 
 	public function order_details($order_id) {
 		$this->load->view("admins/order_details");

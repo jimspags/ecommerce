@@ -76,6 +76,7 @@ $route['dashboard/order_detail/(:num)'] = "admins/order_details/$1";
 // Products
 $route['dashboard/add_product'] = "products/add_product"; // Add product
 $route['dashboard/delete_product/(:num)'] = "products/delete_product/$1";
+$route['dashboard/get_product(:num)'] = "products/get_product/$1";
 
 // Customers
 $route['profile'] = "customers/edit_profile";

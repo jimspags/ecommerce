@@ -8,6 +8,12 @@ class Products extends CI_Controller {
 		$this->load->model("Product");
 	}
 
+	public function fetch_products() {
+		$all_products = $this->Product->all_products();
+		$all_categories = $this->Product->all_categories();
+		$this->load->view("/partials/admins/dashboard_products_table", array("products" => $all_products, "categories" => $all_categories));
+	}
+
 	/**
 	 * Index Page for this controller.
 	 *
@@ -28,17 +34,25 @@ class Products extends CI_Controller {
 		$response = array();
 		if($this->Product->validate_product() == FALSE) {
 			$response = array("status" => 400, "errors" => validation_errors());
+			echo json_encode($response);
 		} else {
 			$this->Product->insert_product($this->input->post(NULL, TRUE));
 			$response = array("status" => 200);
+			echo json_encode($response);
 		}
-		echo json_encode($response);
-	}
 
+
+	}
 
 	public function delete_product($id) {
 		if($this->Product->delete_product($id) == TRUE) {
-			echo json_encode(array("status" => 200));
+			$this->fetch_products();
 		}
 	}
+
+	public function get_product($id) {
+		echo json_encode($this->Product->get_product_by_id($id));
+	}
+
+
 }

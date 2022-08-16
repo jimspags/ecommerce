@@ -13,15 +13,20 @@
     </head>
     <script>
         $(document).ready(function() {
+
+            // Fetch products
+            fetch_table();
+            function fetch_table() {
+                $.get("<?= base_url() ?>products/fetch_products", function(data) {
+                    $("tbody").html(data);
+                });
+            }
+
             $( "#sortable" ).sortable();
 			$( "#sortable" ).disableSelection();
 
-            $("#form-edit-dialog").dialog({
-                autoOpen: false,
-                title: "Edit Product - ID 2"
-            });
-            
             $("#form-add-dialog").dialog({
+                
                 autoOpen: false,
                 title: "Add new Product"
             });
@@ -32,17 +37,14 @@
                         $(".loader-dialog").hide(); // Hide loading image
                     }, 1000);
             }
-            //form modal
-            $("button#edit").on("click", function() {
-                    $("#form-edit-dialog").dialog("open");
-            });
+
+
             $("nav button").on("click", function() {
-                    $("#form-add-dialog").dialog("open");
+                $("#form-add-dialog").dialog("open");
+                $("input[name='name']").val("");
+                $("textarea[name='description']").val("");
             });
-            //edit category
-            $(document).on('click', "img.edit", function() {
-                $(this).siblings("input").removeAttr("readonly");
-            });
+
             //update/add category
             $(document).on('keyup', "input.category", function() {
                 setTimeout(function() { 
@@ -51,17 +53,16 @@
                 }, 2000);
             });
 
-            //Add product in modal
+            // Add product in modal
             $(document).on('submit', "form", function() {
-
                 show_hide_loader();
                 $.post($(this).attr("action"), $(this).serialize(), function(data) {
                     $("#errors").html("");
                     if(JSON.parse(data).status == 400) {
                         $("#errors").html(JSON.parse(data).errors);
-                    } else {
+                    } else if(JSON.parse(data).status == 200) {
                         $(".form-dialog").dialog("close");
-                        console.log(JSON.parse(data))
+                        fetch_table();
                     }
                 });
                 
@@ -70,8 +71,8 @@
 
             // Add Category Select manipulation
             $(document).on("click", ".category", function() {
+
                 $("input[name='category']").val($(this).attr("value"));
-                console.log($("input[name='category']").val());
                 $("summary").html($("input[name='category']").val() + "<span>▼</span>");
                 $("summary").click();
             });
@@ -80,6 +81,7 @@
             $(document).on('click', "button#cancel", function() {
                 $(".form-dialog").dialog("close");
             });
+
             //Preview in product modal
             $(document).on('click', "button#preview", function() {
                 window.open('product_details.html', '_blank');
@@ -89,11 +91,16 @@
             $(document).on('click', "button#delete, img.remove", function() {
                 if (confirm($(this).attr('title') + " will be deleted. Click to confirm.")) {
                     $.get($(this).attr("action"), function(data) {
-                        console.log(data);
+                        $("tbody").html(data);
                     })
-                    alert($(this).attr('title')+" is now deleted.");
+                    // alert($(this).attr('title')+" is now deleted.");
                 }
             });
+
+        
+
+
+
         });
         
     </script>
@@ -206,7 +213,7 @@
         
                 <p>Images:</p>
                 <label for="upload">Upload</label>        
-                <input type="file" id="image_product" name="image_product" hidden/>
+                <input type="file" id="image_product" name="image_product" />
                 <ul></ul>
 
                 <button type="button" id="cancel">Cancel</button>
@@ -242,23 +249,6 @@
                 </tr>                
             </thead>
             <tbody>
-<?php
-    foreach($products as $product) {
-?>
-                <tr>
-                    <td><img src="<?= base_url() ?>assets/img/magnifying_glass.png"></td>
-                    <td><?= $product['id'] ?></td>
-                    <td><?= $product['product_name'] ?></td>
-                    <td>FIXED</td>
-                    <td>FIXED</td>
-                    <td> 
-                        <button id="edit">edit</button>
-                        <button id="delete" title="<?= $product['product_name'] ?>" action="<?= base_url() ?>dashboard/delete_product/<?= $product['id'] ?>">delete</button>
-                    </td>
-                </tr>
-<?php
-    }
-?>
             </tbody>
         </table>
         <footer>
