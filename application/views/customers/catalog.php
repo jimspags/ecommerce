@@ -57,74 +57,19 @@
             </form>
             <!-- Display Products -->
             <section>
+<?php
+    foreach($products as $product) {
+?>
                 <figure>
-                    <a href="<?= base_url() ?>product/1">
-                        <img src="./img/magnifying_glass.png"/>
-                        <p>$1.99</p>
-                        <figcaption>Magnifying Glass</figcaption>
+                    <a href="<?= base_url() ?>product/<?= $product['id'] ?>">
+                        <img src="<?= base_url() ?>assets/img/magnifying_glass.png"/>
+                        <p>$<?= $product['price'] ?></p>
+                        <figcaption><?= $product['product_name'] ?></figcaption>
                     </a>
                 </figure>
-                <figure>
-                    <a href="#">
-                        <img src="./img/magnifying_glass.png"/>
-                        <p>$1.99</p>
-                        <figcaption>Magnifying Glass</figcaption>
-                    </a>
-                </figure><figure>
-                    <a href="./product_details.html">
-                        <img src="./img/magnifying_glass.png"/>
-                        <p>$1.99</p>
-                        <figcaption>Magnifying Glass</figcaption>
-                    </a>
-                </figure>
-                <figure>
-                    <a href="#">
-                        <img src="./img/magnifying_glass.png"/>
-                        <p>$1.99</p>
-                        <figcaption>Magnifying Glass</figcaption>
-                    </a>
-                </figure><figure>
-                    <a href="./product_details.html">
-                        <img src="./img/magnifying_glass.png"/>
-                        <p>$1.99</p>
-                        <figcaption>Magnifying Glass</figcaption>
-                    </a>
-                </figure>
-                <figure>
-                    <a href="#">
-                        <img src="./img/magnifying_glass.png"/>
-                        <p>$1.99</p>
-                        <figcaption>Magnifying Glass</figcaption>
-                    </a>
-                </figure>
-                <figure>
-                    <a href="./product_details.html">
-                        <img src="./img/magnifying_glass.png"/>
-                        <p>$1.99</p>
-                        <figcaption>Magnifying Glass</figcaption>
-                    </a>
-                </figure>
-                <figure>
-                    <a href="#">
-                        <img src="./img/magnifying_glass.png"/>
-                        <p>$1.99</p>
-                        <figcaption>Magnifying Glass</figcaption>
-                    </a>
-                </figure>
-                <figure>
-                    <a href="#">
-                        <img src="./img/magnifying_glass.png"/>
-                        <p>$1.99</p>
-                        <figcaption>Magnifying Glass</figcaption>
-                    </a>
-                </figure>
-                <figure>
-                    <a href="#">
-                        <img src="./img/magnifying_glass.png"/>
-                        <p>$1.99</p>
-                        <figcaption>Magnifying Glass</figcaption>
-                    </a>
-                </figure>
+<?php
+    }
+?>
             </section>
             <footer>
                 <a href="#">1</a>

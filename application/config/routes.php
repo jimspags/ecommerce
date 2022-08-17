@@ -81,6 +81,8 @@ $route['dashboard/get_product(:num)'] = "products/get_product/$1";
 // Customers
 $route['profile'] = "customers/edit_profile";
 $route['profile/edit_password'] = "customers/edit_password";
+$route['profile/default_shipping'] = "customers/shipping_process";
+$route['profile/default_billing'] = "customers/billing_process";
 
 $route['cart'] = "customers/shopping_cart";
 $route['product/(:num)'] = "customers/product_details/$1";

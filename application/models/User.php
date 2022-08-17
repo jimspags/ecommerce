@@ -28,6 +28,8 @@
             }
         }
 
+
+
         // Validate login input
         public function validate_login () {
             $this->form_validation->set_rules("email", "Email address", "required");

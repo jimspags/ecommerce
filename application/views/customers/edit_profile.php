@@ -27,6 +27,7 @@
                         if(JSON.parse(data).status == 200) {
                             $('#message-dialog').html(message);
                             $("#message-dialog").dialog("open");
+                            console.log(JSON.parse(data));
                         }
 
                         
@@ -76,68 +77,81 @@
 
         <fieldset>
             <legend>Edit Default Shipping</legend>
-            <form>
+            <form action="<?= base_url() ?>profile/default_shipping" method="POST">
                 <label for="first_name">First Name:</label>
-                <input type="text" name="first_name" />
+                <input type="text" name="first_name" value="<?= !empty($shipping['first_name']) ? $shipping['first_name'] : '' ?>"/>
 
                 <label for="last_name">Last Name:</label>
-                <input type="text" name="last_name" />
+                <input type="text" name="last_name" value="<?= !empty($shipping['last_name']) ? $shipping['last_name'] : '' ?>" />
 
                 <label for="address1">Address:</label>
-                <textarea name="address1"></textarea>
+                <textarea name="address1"><?= !empty($shipping['address']) ? $shipping['address'] : '' ?></textarea>
                 
                 <label for="address">Address 2:</label>
-                <textarea name="address2"></textarea>
+                <textarea name="address2"><?= !empty($shipping['address_2']) ? $shipping['address_2'] : '' ?></textarea>
 
                 <label for="city">City:</label>
-                <input type="text" name="city"></textarea>
+                <input type="text" name="city" value="<?= !empty($shipping['city']) ? $shipping['city'] : '' ?>"></textarea>
 
                 <label for="state">State:</label>
-                <input type="text" name="state">
+                <input type="text" name="state" value="<?= !empty($shipping['state']) ? $shipping['state'] : '' ?>">
 
                 <label for="zipcode">Zipcode:</label>
-                <input type="text" name="zipcode">
-
+                <input type="text" name="zipcode" value="<?= !empty($shipping['zipcode']) ? $shipping['zipcode'] : '' ?>">
+                <input type="hidden" name="<?= $this->security->get_csrf_token_name() ?>" value="<?= $this->security->get_csrf_hash() ?>">
+                <!-- Pass to be determined by check_existence function if the info of the user exist in a table -->
+                <input type="hidden" name="table" value="shipping_information">
                 <input type="submit" message="Shipping information successfully updated!" value="Save">
             </form>
         </fieldset>
 
         <fieldset>
             <legend>Edit Default Billing</legend>
-            <form>
+            <form action="<?= base_url() ?>profile/default_billing" method="POST">
                 <label for="first_name">First Name:</label>
-                <input type="text" name="first_name" />
+                <input type="text" name="first_name" value="<?= !empty($billing['first_name']) ? $billing['first_name'] : '' ?>" />
                 
                 <label for="last_name">Last Name:</label>
-                <input type="text" name="last_name" />
+                <input type="text" name="last_name" value="<?= !empty($billing['last_name']) ? $billing['last_name'] : '' ?>"/>
 
                 <label for="address1">Address:</label>
-                <textarea name="address1"></textarea>
+                <textarea name="address1"><?= !empty($billing['address']) ? $billing['address'] : '' ?></textarea>
                 
                 <label for="address">Address 2:</label>
-                <textarea name="address2"></textarea>
+                <textarea name="address2"><?= !empty($billing['address_2']) ? $billing['address_2'] : '' ?></textarea>
 
                 <label for="city">City:</label>
-                <input type="text" name="city">
+                <input type="text" name="city" value="<?= !empty($billing['city']) ? $billing['city'] : '' ?>">
 
                 <label for="state">State:</label>
-                <input type="text" name="state">
+                <input type="text" name="state" value="<?= !empty($billing['state']) ? $billing['state'] : '' ?>">
     
                 <label for="zipcode">Zipcode:</label>
-                <input type="text" name="zipcode">
+                <input type="text" name="zipcode" value="<?= !empty($billing['zipcode']) ? $billing['zipcode'] : '' ?>">
     
                 <label for="card">Card:</label>
-                <input type="text" name="card">
+                <input type="text" name="card" value="<?= !empty($billing['card_name']) ? $billing['card_name'] : '' ?>">
     
                 <label for="security_code">Card Security Code:</label>
-                <input type="text" name="security_code">
+                <input type="text" name="security_code" value="<?= !empty($billing['security_code']) ? $billing['security_code'] : '' ?>">
     
                 <label for="expiration">Card Expiration:</label>
-                <input type="month" name="expiration">
-    
+
+                <input type="hidden" id="expiration_value" value="<?= !empty($billing['expiration']) ? substr($billing['expiration'], 0, 7) : '' ?>">
+
+                <input type="month" name="expiration" >
+
+                <input type="hidden" name="<?= $this->security->get_csrf_token_name() ?>" value="<?= $this->security->get_csrf_hash() ?>">
+
+                <!-- Pass to be determined by check_existence function if the info of the user exist in a table -->
+                <input type="hidden" name="table" value="billing_information">
                 <input type="submit" message="Billing information successfully updated!" value="Save">
             </form>
         </fieldset>
-
+    <script>
+        $(document).ready(function() {
+            $("input[name='expiration']").val($("#expiration_value").val());
+        });
+    </script>
     </body>
 </html>

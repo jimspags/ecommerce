@@ -6,14 +6,25 @@ class Customers extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 		$this->load->model("Customer");
+		$this->load->model("Product");
 	}
 
 	public function index() {
-		$this->load->view("/customers/catalog");
+		$all_products = $this->Product->all_products();
+		$all_categories = $this->Product->all_categories();
+		$categories = array(); 
+		foreach($all_products as $product) {
+
+		}
+		$this->load->view("/customers/catalog", array("products" => $all_products));
 	}
 	
+	// Edit profile page and pass data
 	public function edit_profile() {
-		$this->load->view("/customers/edit_profile");
+		$shipping = $this->Customer->get_information_by_table("shipping_information");
+		$billing = $this->Customer->get_information_by_table("billing_information");
+		
+		$this->load->view("/customers/edit_profile", array("shipping" => $shipping, "billing" => $billing));
 	}
 
 	public function edit_password() {
@@ -36,6 +47,47 @@ class Customers extends CI_Controller {
 		}
 
 		echo json_encode($password_response);
+	}
+
+	// Validate and insert shipping information
+	public function shipping_process() {
+		$shipping_response = array();
+		if($this->Customer->validate_shipping() == FALSE) {
+			$shipping_response = array("status" => 400, "errors" => validation_errors());
+		} else {
+			if($this->Customer->check_existence($this->session->userdata("user_id"), $this->input->post("table", TRUE)) == TRUE) {
+				// Update query
+				$this->Customer->update_shipping($this->input->post(NULL, TRUE));
+				$shipping_response = array("status" => 200);
+			} else {
+				// Insert query
+				$this->Customer->insert_shipping($this->input->post(NULL, TRUE));
+				$shipping_response = array("status" => 200);
+			}
+			
+		}
+		echo json_encode($shipping_response);
+	}
+
+
+	public function billing_process() {
+
+		$billing_response = array();
+		if($this->Customer->validate_billing() == FALSE) {
+			$billing_response = array("status" => 400, "errors" => validation_errors());
+		} else {
+			if($this->Customer->check_existence($this->session->userdata("user_id"), $this->input->post("table", TRUE)) == TRUE) {
+				// Update query
+				$this->Customer->update_billing($this->input->post(NULL, TRUE));
+				$billing_response = array("status" => 200);
+			} else {
+				// Insert query
+				$this->Customer->insert_billing($this->input->post(NULL, TRUE));
+				$billing_response = array("status" => 200);
+			}
+			
+		}
+		echo json_encode($billing_response);
 	}
 
 	public function shopping_cart() {
