@@ -79,15 +79,17 @@ $route['dashboard/delete_product/(:num)'] = "products/delete_product/$1";
 $route['dashboard/get_product(:num)'] = "products/get_product/$1";
 
 // Customers
-$route['profile'] = "customers/edit_profile";
-$route['profile/edit_password'] = "customers/edit_password";
-$route['profile/default_shipping'] = "customers/shipping_process";
-$route['profile/default_billing'] = "customers/billing_process";
+$route['profile'] = "customers/edit_profile"; // Edit profile page
+$route['profile/edit_password'] = "customers/edit_password"; // Edit profile password
+$route['profile/default_shipping'] = "customers/shipping_process"; // Edit profile shipping
+$route['profile/default_billing'] = "customers/billing_process"; // Edit profile billing
 
-$route['cart'] = "customers/shopping_cart";
-$route['product/(:num)'] = "customers/product_details/$1";
-$route['order_history'] = "customers/order_history";
-$route['order_history_detail/(:num)'] = "customers/order_history_details/$1";
+
+$route['cart'] = "customers/shopping_cart"; // Cart page
+$route['product/(:num)'] = "customers/product_details/$1"; // Product details
+$route['order_history'] = "customers/order_history"; // Order history
+$route['order_history_detail/(:num)'] = "customers/order_history_details/$1"; // Oder history details
+$route['add_to_cart'] = "customers/add_to_cart"; // Add to cart
 
 
 

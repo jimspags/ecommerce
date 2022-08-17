@@ -150,6 +150,7 @@
         </fieldset>
     <script>
         $(document).ready(function() {
+            // Set value for input month
             $("input[name='expiration']").val($("#expiration_value").val());
         });
     </script>

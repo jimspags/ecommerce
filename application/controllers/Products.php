@@ -40,8 +40,6 @@ class Products extends CI_Controller {
 			$response = array("status" => 200);
 			echo json_encode($response);
 		}
-
-
 	}
 
 	public function delete_product($id) {

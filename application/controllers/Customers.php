@@ -94,8 +94,15 @@ class Customers extends CI_Controller {
 		$this->load->view("/customers/shopping_cart");
 	}
 
+	public function add_to_cart() {
+		if($this->Customer->add_to_cart($this->input->post(NULL, TRUE)) == TRUE) {
+			echo json_encode(array("status" => 200));
+		}
+	}
+
 	public function product_details($product_id) {
-		$this->load->view("/customers/product_details");
+		$product = $this->Product->get_product_by_id($product_id);
+		$this->load->view("/customers/product_details", array("product" => $product));
 	}
 
 	public function order_history() {

@@ -127,6 +127,30 @@
             }
         }
 
+        public function add_to_cart($post) {
+            
+            // Check product order existence
+            $query_check = "SELECT quantity, total FROM user_carts WHERE user_id = ? AND product_id = ?";
+            $values_check = array($this->session->userdata("user_id"), $post['product_id']);
+            $result_check = $this->db->query($query_check, $values_check)->row_array();
+
+            
+            if($result_check != NULL) {
+                // Update quantity and total
+                $query_update = "UPDATE user_carts SET quantity = ?, total = ?, updated_at = ? WHERE user_id = ? AND product_id = ?";
+                $values_update = array((intval($result_check['quantity']) + intval($post['quantity'])), ($result_check['total'] + $post['total']), date("Y-m-d, H:i:s"), $this->session->userdata("user_id"), $post['product_id']);
+                $this->db->query($query_update, $values_update);
+            } else {
+                // Add to cart
+                $query_insert = "INSERT INTO user_carts(user_id, product_id, quantity, total, created_at, updated_at) VALUES(?, ?, ?, ?, ?, ?)";
+                $values_insert = array($this->session->userdata("user_id"), $post['product_id'], $post['quantity'], $post['total'], date("Y-m-d, H:i:s"), date("Y-m-d, H:i:s"));
+                $this->db->query($query_insert, $values_insert);
+            }
+
+
+            return TRUE;
+        }
+
     }
 
 

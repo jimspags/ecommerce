@@ -61,7 +61,7 @@
         }
 
         public function get_product_by_id($id) {
-            return $this->db->query("SELECT p.product_name, p.description, c.category_name FROM products p LEFT JOIN product_categories c ON p.product_category_id = c.id WHERE p.id = ? AND c.id = product_category_id", array($id))->row_array();
+            return $this->db->query("SELECT p.id, p.product_name, p.description, p.price, c.category_name FROM products p LEFT JOIN product_categories c ON p.product_category_id = c.id WHERE p.id = ? AND c.id = product_category_id", array($id))->row_array();
         }
 
 
