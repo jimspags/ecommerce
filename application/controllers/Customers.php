@@ -94,8 +94,13 @@ class Customers extends CI_Controller {
 	public function shopping_cart() {
 		$shipping = $this->Customer->get_information_by_table("shipping_information");
 		$billing = $this->Customer->get_information_by_table("billing_information");
+		$this->load->view("/customers/shopping_cart", array("shipping" => $shipping, "billing" => $billing));
+	}
+
+	public function fetch_shopping_cart() {
+
 		$carts = $this->Customer->get_user_carts();
-		$this->load->view("/customers/shopping_cart", array("shipping" => $shipping, "billing" => $billing, "carts" => $carts));
+		$this->load->view("/partials/customers/shopping_cart_table", array("carts" => $carts));
 	}
 
 
@@ -108,6 +113,11 @@ class Customers extends CI_Controller {
 	public function delete_from_cart() {
 		$this->Customer->delete_cart($this->input->post("cart_id", TRUE));
 		echo json_encode(array("status" => 200));
+	}
+
+	public function update_cart_quantity() {
+		$this->Customer->update_cart_quantity($this->input->post(NULL, TRUE));
+		$this->fetch_shopping_cart();
 	}
 
 	public function product_details($product_id) {

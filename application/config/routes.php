@@ -91,6 +91,6 @@ $route['order_history'] = "customers/order_history"; // Order history
 $route['order_history_detail/(:num)'] = "customers/order_history_details/$1"; // Oder history details
 $route['add_to_cart'] = "customers/add_to_cart"; // Add to cart
 $route['delete_from_cart'] = "customers/delete_from_cart"; // Delete Item from cart
-
+$route['update_cart_quantity'] = "customers/update_cart_quantity"; // Update cart quantity
 
 

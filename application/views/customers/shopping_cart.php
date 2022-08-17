@@ -1,6 +1,3 @@
-<?php
-    $overall_price = 0;
-?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -17,6 +14,14 @@
     </head>
     <script>
         $(document).ready(function() {
+            fetch_shopping_cart();
+            function fetch_shopping_cart() {
+                $.get("customers/fetch_shopping_cart", function(data) {
+                    $("section#table").html(data);
+                });
+            }
+
+
             $("#message-dialog").dialog({
                 autoOpen: false
             });
@@ -35,6 +40,7 @@
                 if (confirm($(this).attr('product-name') + " will be deleted. Click to confirm.")) {
                     $.post($(this).parent().attr("action"), $(this).parent().serialize(), function(data) {
                         console.log(JSON.parse(data).status);
+                        fetch_shopping_cart();
                     });
                     alert($(this).attr('product-name')+" is now deleted.");
                 }
@@ -44,10 +50,19 @@
             $(document).on('click', "button#update", function() {
                 toggleQtyField($(this).siblings('input'));
                 if($(this).attr('clicks') == '0') {
+                    $(this).attr('clicks', "1");
                     return false;
+                }else if ($(this).attr('clicks') == "1") {
+                    console.log($(this).parent().children("input[name='quantity']").val());
+                    $.post($(this).parent().attr("action"), $(this).parent().serialize(), function(data) {
+                    fetch_shopping_cart();
+                    });
+                    $(this).attr('clicks', "0");
+
                 }
-                $(this).attr('clicks', $(this).attr('clicks')%2);
+
             });
+
             $(document).on('click', "#pay_button", function() {
                 $("#message-dialog").dialog("open");
                 return false;
@@ -76,44 +91,8 @@
         <a href="<?= base_url() ?>order_history">View Order History</a>
         
         <div id="message-dialog">Order success!</div>
-        <section>
-            <table>
-                <thead>
-                    <tr>
-                        <td>Item</td>
-                        <td>Price</td>
-                        <td>Quantity</td>
-                        <td>Total</td>
-                    </tr>                
-                </thead>
-                <tbody>
-<?php
-    foreach($carts as $cart) {
-?>
-                    <tr>
-                        <td><?= $cart['product_name'] ?></td>
-                        <td>$<?= $cart['price'] ?></td>
-                        <td>
-                            <form id="update_form">
-                                <input type="number" min="1" class="non-editable-qty" value="<?= $cart['quantity'] ?>"/> <button clicks="0" type="button" id="update">update</button>
-                            </form>
+        <section id="table">
 
-                            <form action="<?= base_url() ?>delete_from_cart" method="POST" id="delete_form">
-                                <input type="hidden" name="cart_id" value="<?= $cart['id'] ?>">    
-                                <input type="hidden" name="<?= $this->security->get_csrf_token_name() ?>" value="<?= $this->security->get_csrf_hash() ?>">
-                                <img product-name="Black Belt for Staff" src="<?= base_url() ?>assets/img/trash-can.png"/></form></td>
-                            </form>
-                        <td>$<?= $cart['total'] ?></td>
-                    </tr>
-                    
-<?php
-    $overall_price += $cart['total'];
-    }
-?>
-                </tbody>
-            </table>
-            <p>Total: $<?= $overall_price ?></p>
-            <button type="button" onclick="location.href='<?= base_url() ?>';">Continue Shopping</button>
         </section>
         <form>
             <h3>Shipping Information</h3>

@@ -27,9 +27,9 @@
             <a href="<?= base_url() ?>cart">Shopping Cart (5)</a>
 
         </header>  
-        <form action="./search-keyword.html" method="POST">
+        <form action="<?= base_url() ?>assets/search-keyword.html" method="POST">
             <div>
-                <img src='./img/magnifying_glass.png' />
+                <img src='<?= base_url() ?>assets/img/magnifying_glass.png' />
                 <input type="search" name="search_keyword" placeholder="search">
             </div>
             <ul>

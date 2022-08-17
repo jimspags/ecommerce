@@ -150,9 +150,25 @@
             return TRUE;
         }
 
+        // Delete cart item by id
         public function delete_cart($id) {
             $query = "DELETE FROM user_carts WHERE id = ?";
             $this->db->query($query, array($id));
+        }
+
+        // Update cart item quantity
+        public function update_cart_quantity($post) {
+            // Get price item
+            $query_get = "SELECT pr.price FROM user_carts uc 
+                        LEFT JOIN products pr 
+                        ON uc.product_id = pr.id
+                        WHERE uc.id = ?";
+            $result_get = $this->db->query($query_get, array($post['cart_id']))->row_array();
+
+            $total_price = $result_get['price'] * $post['quantity'];
+
+            $query_update = "UPDATE user_carts SET quantity = ?, total = ? WHERE id = ? AND user_id = ?";
+            $this->db->query($query_update, array($post['quantity'], $total_price, $post['cart_id'], $this->session->userdata("user_id")));
         }
 
         // Get all user cart list
