@@ -71,7 +71,6 @@ class Customers extends CI_Controller {
 
 
 	public function billing_process() {
-
 		$billing_response = array();
 		if($this->Customer->validate_billing() == FALSE) {
 			$billing_response = array("status" => 400, "errors" => validation_errors());
@@ -90,14 +89,25 @@ class Customers extends CI_Controller {
 		echo json_encode($billing_response);
 	}
 
+
+	// Shipping cart page
 	public function shopping_cart() {
-		$this->load->view("/customers/shopping_cart");
+		$shipping = $this->Customer->get_information_by_table("shipping_information");
+		$billing = $this->Customer->get_information_by_table("billing_information");
+		$carts = $this->Customer->get_user_carts();
+		$this->load->view("/customers/shopping_cart", array("shipping" => $shipping, "billing" => $billing, "carts" => $carts));
 	}
+
 
 	public function add_to_cart() {
 		if($this->Customer->add_to_cart($this->input->post(NULL, TRUE)) == TRUE) {
 			echo json_encode(array("status" => 200));
 		}
+	}
+
+	public function delete_from_cart() {
+		$this->Customer->delete_cart($this->input->post("cart_id", TRUE));
+		echo json_encode(array("status" => 200));
 	}
 
 	public function product_details($product_id) {

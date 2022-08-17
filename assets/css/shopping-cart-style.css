@@ -16,9 +16,10 @@ div[role="dialog"] button  {
     color: transparent !important;
     outline: none;
 }
-form#qty_form, form#delete_form {
+form#qty_form, form#delete_form, form#update_form {
     display:inline-block;
 }
+
 .ui-widget-content {
     background: #c9c9c9;
     text-align: center;

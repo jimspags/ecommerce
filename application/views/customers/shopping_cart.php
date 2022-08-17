@@ -1,3 +1,6 @@
+<?php
+    $overall_price = 0;
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -27,11 +30,16 @@
                     $(qtyField).attr("class","non-editable-qty");
                 }
             }
+
             $(document).on('click', "img", function() {
                 if (confirm($(this).attr('product-name') + " will be deleted. Click to confirm.")) {
+                    $.post($(this).parent().attr("action"), $(this).parent().serialize(), function(data) {
+                        console.log(JSON.parse(data).status);
+                    });
                     alert($(this).attr('product-name')+" is now deleted.");
                 }
             });
+
             //submit the form for twice button click
             $(document).on('click', "button#update", function() {
                 toggleQtyField($(this).siblings('input'));
@@ -79,75 +87,87 @@
                     </tr>                
                 </thead>
                 <tbody>
+<?php
+    foreach($carts as $cart) {
+?>
                     <tr>
-                        <td>Black Belt for Staff</td>
-                        <td>$19.99</td>
-                        <td><form><input type="number" min="1" class="non-editable-qty" value="1"/> <button clicks="0" type="button" id="update">update</button> <img product-name="Black Belt for Staff" src="./img/trash-can.png"/></form></td>
-                        <td>$19.99</td>
+                        <td><?= $cart['product_name'] ?></td>
+                        <td>$<?= $cart['price'] ?></td>
+                        <td>
+                            <form id="update_form">
+                                <input type="number" min="1" class="non-editable-qty" value="<?= $cart['quantity'] ?>"/> <button clicks="0" type="button" id="update">update</button>
+                            </form>
+
+                            <form action="<?= base_url() ?>delete_from_cart" method="POST" id="delete_form">
+                                <input type="hidden" name="cart_id" value="<?= $cart['id'] ?>">    
+                                <input type="hidden" name="<?= $this->security->get_csrf_token_name() ?>" value="<?= $this->security->get_csrf_hash() ?>">
+                                <img product-name="Black Belt for Staff" src="<?= base_url() ?>assets/img/trash-can.png"/></form></td>
+                            </form>
+                        <td>$<?= $cart['total'] ?></td>
                     </tr>
-                    <tr>
-                        <td>Coding Dojo Cups</td>
-                        <td>$9.99</td>
-                        <td><form><input type="number" min="1" class="non-editable-qty" value="2"/> <button clicks="0" type="button" id="update">update</button> <img product-name="Coding Dojo Cups" src="./img/trash-can.png"/></form></td>
-                        <td>$29.97</td>
-                    </tr>
+                    
+<?php
+    $overall_price += $cart['total'];
+    }
+?>
                 </tbody>
             </table>
-            <p>Total: $49.96</p>
+            <p>Total: $<?= $overall_price ?></p>
             <button type="button" onclick="location.href='<?= base_url() ?>';">Continue Shopping</button>
         </section>
         <form>
             <h3>Shipping Information</h3>
 
             <label for="first_name">First Name:</label>
-            <input type="text" name="first_name" />
+            <input type="text" name="first_name" value="<?= !empty($shipping['first_name']) ? $shipping['first_name'] : '' ?>"/>
 
             <label for="city">City:</label>
-            <input type="text" name="city"></textarea>
+            <input type="text" name="city" value="<?= !empty($shipping['city']) ? $shipping['city'] : '' ?>"></textarea>
 
             <label for="last_name">Last Name:</label>
-            <input type="text" name="last_name" />
+            <input type="text" name="last_name" value="<?= !empty($shipping['last_name']) ? $shipping['last_name'] : '' ?>" />
 
             <label for="state">State:</label>
-            <input type="text" name="state">
+            <input type="text" name="state" value="<?= !empty($shipping['state']) ? $shipping['state'] : '' ?>">
 
             <label for="address1">Address:</label>
-            <textarea name="address1"></textarea>
+            <textarea name="address1"><?= !empty($shipping['address']) ? $shipping['address'] : '' ?></textarea>
 
             <label for="zipcode">Zipcode:</label>
-            <input type="text" name="zipcode">
+            <input type="text" name="zipcode" value="<?= !empty($shipping['zipcode']) ? $shipping['zipcode'] : '' ?>">
 
             <label for="address">Address 2:</label>
-            <textarea name="address2"></textarea>
+            <textarea name="address2"><?= !empty($shipping['address_2']) ? $shipping['address_2'] : '' ?></textarea>
             <!----------------------------------->
             <h3>Billing Information</h3>
 
             <label for="first_name">First Name:</label>
-            <input type="text" name="first_name" />
+            <input type="text" name="first_name" value="<?= !empty($billing['first_name']) ? $billing['first_name'] : '' ?>" />
             
             <label for="state">State:</label>
-            <input type="text" name="state">
+            <input type="text" name="state" value="<?= !empty($billing['state']) ? $billing['state'] : '' ?>">
 
             <label for="last_name">Last Name:</label>
-            <input type="text" name="last_name" />
+            <input type="text" name="last_name" value="<?= !empty($billing['last_name']) ? $billing['last_name'] : '' ?>"/>
 
             <label for="zipcode">Zipcode:</label>
-            <input type="text" name="zipcode">
+            <input type="text" name="zipcode" value="<?= !empty($billing['zipcode']) ? $billing['zipcode'] : '' ?>">
 
             <label for="address1">Address:</label>
-            <textarea name="address1"></textarea>
+            <textarea name="address1"><?= !empty($billing['address']) ? $billing['address'] : '' ?></textarea>
 
             <label for="card">Card:</label>
-            <input type="text" name="card">
+            <input type="text" name="card" value="<?= !empty($billing['card_name']) ? $billing['card_name'] : '' ?>">
 
             <label for="address">Address 2:</label>
-            <textarea name="address2"></textarea>
+            <textarea name="address2"><?= !empty($billing['address_2']) ? $billing['address_2'] : '' ?></textarea>
 
             <label for="security_code">Card Security Code:</label>
-            <input type="text" name="security_code">
+            <input type="password" name="security_code" value="<?= !empty($billing['security_code']) ? $billing['security_code'] : '' ?>">
 
             <label for="city">City:</label>
-            <input type="text" name="city">
+            <input type="text" name="city" value="<?= !empty($billing['city']) ? $billing['city'] : '' ?>">
+            <input type="hidden" id="expiration_value" value="<?= !empty($billing['expiration']) ? substr($billing['expiration'], 0, 7) : '' ?>">
 
             <label for="expiration">Card Expiration:</label>
             <input type="month" name="expiration">
@@ -156,4 +176,10 @@
         </form>
 
     </body>
+    <script>
+        $(document).ready(function() {
+            // Set value for input month
+            $("input[name='expiration']").val($("#expiration_value").val());
+        });
+    </script>
 </html>

@@ -133,7 +133,7 @@
                 <input type="text" name="card" value="<?= !empty($billing['card_name']) ? $billing['card_name'] : '' ?>">
     
                 <label for="security_code">Card Security Code:</label>
-                <input type="text" name="security_code" value="<?= !empty($billing['security_code']) ? $billing['security_code'] : '' ?>">
+                <input type="password" name="security_code" value="<?= !empty($billing['security_code']) ? $billing['security_code'] : '' ?>">
     
                 <label for="expiration">Card Expiration:</label>
 

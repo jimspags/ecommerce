@@ -101,7 +101,7 @@
         public function update_shipping($post) {
             $query = "UPDATE shipping_information SET first_name = ?, last_name = ?, address = ?, address_2 = ?, city = ?, state = ?, zipcode = ?, updated_at = ? WHERE user_id = ?";
 
-            $values = array($post['first_name'], $post['last_name'], $post['address1'], $post['address2'], $post['city'], $post['state'], $post['zipcode'], date("Y-m-d, H:i:s"), $this->session->userdata());
+            $values = array($post['first_name'], $post['last_name'], $post['address1'], $post['address2'], $post['city'], $post['state'], $post['zipcode'], date("Y-m-d, H:i:s"), $this->session->userdata("user_id"));
             
             $this->db->query($query, $values);
         }
@@ -147,8 +147,20 @@
                 $this->db->query($query_insert, $values_insert);
             }
 
-
             return TRUE;
+        }
+
+        public function delete_cart($id) {
+            $query = "DELETE FROM user_carts WHERE id = ?";
+            $this->db->query($query, array($id));
+        }
+
+        // Get all user cart list
+        public function get_user_carts() {
+            $query = "SELECT pr.product_name, pr.price, uc.quantity, uc.total, uc.id FROM user_carts uc 
+                    LEFT JOIN products pr ON uc.product_id = pr.id 
+                    WHERE uc.user_id = ? AND pr.id = uc.product_id";
+            return $this->db->query($query, array($this->session->userdata("user_id")))->result_array();
         }
 
     }
