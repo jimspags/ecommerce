@@ -10,7 +10,9 @@
                 <tbody>
 <?php
     $overall_price = 0;
+    $items = 0;
     foreach($carts as $cart) {
+    $items++;
 ?>
                     <tr>
                         <td><?= $cart['product_name'] ?></td>
@@ -33,6 +35,12 @@
                     
 <?php
     $overall_price += $cart['total'];
+    
+    }
+    if($items == 0) {
+?>
+                        <td colspan="4" style="text-align: center">No item added</td>
+<?php
     }
 ?>
                 </tbody>

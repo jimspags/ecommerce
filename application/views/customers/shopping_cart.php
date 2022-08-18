@@ -14,6 +14,7 @@
     </head>
     <script>
         $(document).ready(function() {
+
             fetch_shopping_cart();
             function fetch_shopping_cart() {
                 $.get("customers/fetch_shopping_cart", function(data) {
@@ -21,6 +22,8 @@
                 });
             }
 
+            // Set value for input month
+            $("input[name='expiration']").val($("#expiration_value").val());
 
             $("#message-dialog").dialog({
                 autoOpen: false
@@ -155,10 +158,4 @@
         </form>
 
     </body>
-    <script>
-        $(document).ready(function() {
-            // Set value for input month
-            $("input[name='expiration']").val($("#expiration_value").val());
-        });
-    </script>
 </html>

@@ -11,11 +11,6 @@ class Customers extends CI_Controller {
 
 	public function index() {
 		$all_products = $this->Product->all_products();
-		$all_categories = $this->Product->all_categories();
-		$categories = array(); 
-		foreach($all_products as $product) {
-
-		}
 		$this->load->view("/customers/catalog", array("products" => $all_products));
 	}
 	
@@ -97,8 +92,8 @@ class Customers extends CI_Controller {
 		$this->load->view("/customers/shopping_cart", array("shipping" => $shipping, "billing" => $billing));
 	}
 
+	// Fetch shopping cart table
 	public function fetch_shopping_cart() {
-
 		$carts = $this->Customer->get_user_carts();
 		$this->load->view("/partials/customers/shopping_cart_table", array("carts" => $carts));
 	}
