@@ -173,10 +173,16 @@
 
         // Get all user cart list
         public function get_user_carts() {
-            $query = "SELECT pr.product_name, pr.price, uc.quantity, uc.total, uc.id FROM user_carts uc 
+            $query = "SELECT pr.product_name, pr.description, pr.price, uc.quantity, uc.total, uc.id FROM user_carts uc 
                     LEFT JOIN products pr ON uc.product_id = pr.id 
                     WHERE uc.user_id = ? AND pr.id = uc.product_id AND uc.status = ?";
             return $this->db->query($query, array($this->session->userdata("user_id"), "Pending"))->result_array();
+        }
+
+        public function get_cart_count() {
+            $query = "SELECT SUM(quantity) AS cart_count FROM user_carts WHERE user_id = ? AND status = 'Pending'";
+            $result = $this->db->query($query, array($this->session->userdata("user_id")))->row_array();
+            return $result['cart_count'];
         }
 
     }

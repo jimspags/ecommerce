@@ -60,7 +60,7 @@
 <?php
     }
 ?>
-            <a href="<?= base_url() ?>cart">Shopping Cart (5)</a>
+            <a href="<?= base_url() ?>cart">Shopping Cart (<?= !empty($this->session->userdata("cart_count")) ? $this->session->userdata("cart_count") : 0?>)</a>
 
         </header> 
         <main>
@@ -94,7 +94,7 @@
     foreach($similar_items as $similar_item) {
 ?>
             <figure>
-                <a href="">
+                <a href="<?= base_url() ?>product/<?= $similar_item['id'] ?>">
                     <img src="<?= base_url() ?>assets/img/magnifying_glass.png"/>
                     <p>$<?= $similar_item['price'] ?></p>
                     <figcaption><?= $similar_item['product_name'] ?></figcaption>

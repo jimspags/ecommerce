@@ -7,11 +7,17 @@ class Customers extends CI_Controller {
 		parent::__construct();
 		$this->load->model("Customer");
 		$this->load->model("Product");
+
+		if($this->session->userdata("is_logged_in") == "1") {
+			$this->session->set_userdata("cart_count", $this->Customer->get_cart_count());
+		}
+
 	}
 
 	public function index() {
 		$all_products = $this->Product->all_products();
-		$this->load->view("/customers/catalog", array("products" => $all_products));
+		$categories = $this->Product->all_product_categories();
+		$this->load->view("/customers/catalog", array("products" => $all_products, "categories" => $categories));
 	}
 	
 	// Edit profile page and pass data
@@ -89,12 +95,55 @@ class Customers extends CI_Controller {
 	public function shopping_cart() {
 		$shipping = $this->Customer->get_information_by_table("shipping_information");
 		$billing = $this->Customer->get_information_by_table("billing_information");
+		$customer_info = array(
+			"shipped_to" => $shipping['first_name'] . " " . $shipping['last_name'],
+			// "date" => date(),
+			"billing_address" => ($billing['address'] . " " .  $billing['address_2'] . " " .  $billing['city'] . " " .  $billing['state'] . " " .  $billing['zipcode']),
+			"total" => $this->session->userdata("amount")['total'],
+			"subtotal" => $this->session->userdata("amount")['subtotal'],
+			"shipping_fee" => $this->session->userdata("amount")['shipping_fee'],
+		);
+
+		$this->session->set_userdata("customer_info", $customer_info);
+
 		$this->load->view("/customers/shopping_cart", array("shipping" => $shipping, "billing" => $billing));
 	}
 
 	// Fetch shopping cart table
 	public function fetch_shopping_cart() {
+		// Carts passed for payment
+		$cart_items = array();
+
 		$carts = $this->Customer->get_user_carts();
+		// Compute subtotal, total and shipping fee then display it in shopping page
+		$subtotal = 0;
+		$shipping_fee = 1; // Fixed
+		foreach($carts as $cart) {
+			$subtotal += $cart['total'];
+
+			// Store each item information for payment
+			$cart_items[] = [
+				"price_data" => [
+					"currency" => "usd",
+					"product_data" => [
+						"name" => $cart['product_name'],
+						"description" => $cart['description']
+					],
+					"unit_amount" => (($cart['price']*100))
+				],
+				"quantity" => intval($cart['quantity'])
+			];
+		}
+
+		$total = $subtotal + $shipping_fee;
+
+		// Store summary of payment into session to be used to display in table
+		$this->session->set_userdata("amount", array("subtotal" => $subtotal, "shipping_fee" => $shipping_fee, "total" => $total));
+
+		// Store payment info to be used in Stripe API
+		$this->session->set_userdata("amount_info", $cart_items);
+
+
 		$this->load->view("/partials/customers/shopping_cart_table", array("carts" => $carts));
 	}
 

@@ -24,7 +24,7 @@
 <?php
     }
 ?>
-            <a href="<?= base_url() ?>cart">Shopping Cart (5)</a>
+            <a href="<?= base_url() ?>cart">Shopping Cart (<?= !empty($this->session->userdata("cart_count")) ? $this->session->userdata("cart_count") : 0?>)</a>
 
         </header>  
         <form action="<?= base_url() ?>assets/search-keyword.html" method="POST">
@@ -34,10 +34,15 @@
             </div>
             <ul>
                 <strong>Categories</strong>
-                <li><a href="#">Tshirts (25)</a></li>
-                <li><a href="#">Cups (25)</a></li>
-                <li><a href="#">Fruits (25)</a></li>
+<?php
+    foreach($categories as $category) {
+?>
+                <li><a href="#"><?= $category['category_name'] ?> (<?= $category['product_count'] ?>)</a></li>
+<?php
+    }
+?>
                 <li><a href="#">Show All</a></li>
+
             </ul>
         </form>
         <main>

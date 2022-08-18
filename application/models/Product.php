@@ -54,6 +54,13 @@
             return $this->db->query($query)->result_array();
         }
 
+        public function all_product_categories() {
+            $query = "SELECT pc.category_name, COUNT(pr.id) AS product_count FROM products pr
+                    LEFT JOIN product_categories pc
+                    ON pr.product_category_id = pc.id
+                    GROUP BY pr.product_category_id";
+            return $this->db->query($query)->result_array();
+        }
         // fetch all products
         public function all_products() {
             $query = "SELECT * FROM products";
@@ -65,7 +72,7 @@
         }
 
         public function get_similar_items($product_id, $category) {
-            $query = "SELECT pr.product_name, pr.price, pc.category_name FROM products pr 
+            $query = "SELECT pr.id, pr.product_name, pr.price, pc.category_name FROM products pr 
                     LEFT JOIN product_categories pc
                     ON pr.product_category_id = pc.id
                     WHERE pr.id NOT IN(?) AND pc.category_name = ?";

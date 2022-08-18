@@ -24,7 +24,7 @@
 <?php
     }
 ?>
-            <a href="<?= base_url() ?>cart">Shopping Cart (5)</a>
+            <a href="<?= base_url() ?>cart">Shopping Cart (<?= !empty($this->session->userdata("cart_count")) ? $this->session->userdata("cart_count") : 0?>)</a>
 
         </header> 
         <summary>

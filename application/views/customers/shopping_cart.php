@@ -10,7 +10,6 @@
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <link rel="stylesheet" href="<?= base_url() ?>assets/css/shopping-cart-style.css"/>
-
     </head>
     <script>
         $(document).ready(function() {
@@ -69,13 +68,31 @@
 
             });
 
+
+            const stripe = Stripe("pk_test_51LVuCzG5lxSlsedRt0cH8SwncVvGPKwfaHCrlq8xiHJ15hSYsnd818ul69RfM34NbRcjQdPyPjVGpRxLtDDb4cK500JCelC9uJ");
             $(document).on('click', "#pay_button", function() {
-                $("#message-dialog").dialog("open");
+
+                fetch('<?= base_url() ?>orders/checkout',{
+                    method:"POST",
+                    headers:{
+                        'Content-Type' : 'application/json',
+                    },
+                    body: JSON.stringify({})
+                }).then(res=> res.json())
+                .then(payload => {
+                    stripe.redirectToCheckout({sessionId: payload.id})
+                })
+
+
+                // $("#message-dialog").dialog("open");
                 return false;
+
             });
+
         });
     </script>
     <body>
+
         <header>
             <a href="<?= base_url() ?>">Dojo eCommerce</a>
 
@@ -91,14 +108,13 @@
 <?php
     }
 ?>
-            <a href="<?= base_url() ?>cart">Shopping Cart (5)</a>
+            <a href="<?= base_url() ?>cart">Shopping Cart (<?= !empty($this->session->userdata("cart_count")) ? $this->session->userdata("cart_count") : 0?>)</a>
 
         </header>  
         <a href="<?= base_url() ?>order_history">View Order History</a>
         
         <div id="message-dialog">Order success!</div>
         <section id="table">
-
         </section>
         <form>
             <h3>Shipping Information</h3>
@@ -156,11 +172,9 @@
 
             <label for="expiration">Card Expiration:</label>
             <input type="month" name="expiration">
-
-
-            <input type="hidden" name="<?= $this->security->get_csrf_token_name() ?>" value="<?= $this->security->get_csrf_hash() ?>">
             <input type="submit" id="pay_button" value="Pay">
         </form>
 
+        <script src="http://js.stripe.com/v3/"></script>
     </body>
 </html>

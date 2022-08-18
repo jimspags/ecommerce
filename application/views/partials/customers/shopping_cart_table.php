@@ -9,9 +9,7 @@
                 </thead>
                 <tbody>
 <?php
-    $overall_price = 0;
-    $subtotal = 0;
-    $shipping_fee = 1;
+
     $items = 0;
     foreach($carts as $cart) {
     $items++;
@@ -36,7 +34,7 @@
                     </tr>
                     
 <?php
-    $subtotal += $cart['total'];
+    
     
     }
     if($items == 0) {
@@ -47,13 +45,7 @@
 ?>
                 </tbody>
             </table>
-            <p class="amounts">Subtotal: $<?= $subtotal ?></p><br>
-            <p class="amounts">Shipping Fee: $<?= $shipping_fee ?></p><br> <!-- Fixed Shipping Fee by 1 dollar -->
-            <p class="amounts">Total: $<?= $overall_price = ($subtotal + $shipping_fee) ?></p>
+            <p class="amounts">Subtotal: $<?= $this->session->userdata("amount")['subtotal'] ?></p><br>
+            <p class="amounts">Shipping Fee: $<?= $this->session->userdata("amount")['shipping_fee'] ?></p><br> <!-- Fixed Shipping Fee by 1 dollar -->
+            <p class="amounts">Total: $<?= $this->session->userdata("amount")['total'] ?></p>
             <button type="button" onclick="location.href='<?= base_url() ?>';">Continue Shopping</button>
-
-<script>
-    $(document).ready(function() {
-
-    });
-</script>
