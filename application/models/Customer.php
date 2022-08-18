@@ -175,8 +175,8 @@
         public function get_user_carts() {
             $query = "SELECT pr.product_name, pr.price, uc.quantity, uc.total, uc.id FROM user_carts uc 
                     LEFT JOIN products pr ON uc.product_id = pr.id 
-                    WHERE uc.user_id = ? AND pr.id = uc.product_id";
-            return $this->db->query($query, array($this->session->userdata("user_id")))->result_array();
+                    WHERE uc.user_id = ? AND pr.id = uc.product_id AND uc.status = ?";
+            return $this->db->query($query, array($this->session->userdata("user_id"), "Pending"))->result_array();
         }
 
     }

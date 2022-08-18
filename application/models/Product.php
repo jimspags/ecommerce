@@ -64,6 +64,13 @@
             return $this->db->query("SELECT p.id, p.product_name, p.description, p.price, c.category_name FROM products p LEFT JOIN product_categories c ON p.product_category_id = c.id WHERE p.id = ? AND c.id = product_category_id", array($id))->row_array();
         }
 
+        public function get_similar_items($product_id, $category) {
+            $query = "SELECT pr.product_name, pr.price, pc.category_name FROM products pr 
+                    LEFT JOIN product_categories pc
+                    ON pr.product_category_id = pc.id
+                    WHERE pr.id NOT IN(?) AND pc.category_name = ?";
+            return $this->db->query($query, array(intval($product_id), $category))->result_array();
+        }
 
 
     }

@@ -112,6 +112,8 @@ section table {
         section input[type="number"] {
             width:50px;
         }
+
+
 .editable-qty {
     pointer-events: all;
     border:1px solid black;

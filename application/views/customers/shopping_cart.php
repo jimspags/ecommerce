@@ -28,9 +28,12 @@
             $("#message-dialog").dialog({
                 autoOpen: false
             });
-            $('#message-dialog').on('dialogclose', function(event) {
-                location.href="order_history.html";
-            });
+
+            // Succesful payment
+            // $('#message-dialog').on('dialogclose', function(event) {
+            //     location.href="order_history.html";
+            // });
+
             function toggleQtyField(qtyField) {
                 if($(qtyField).hasClass("non-editable-qty")) {
                     $(qtyField).attr("class","editable-qty");
@@ -101,13 +104,13 @@
             <h3>Shipping Information</h3>
 
             <label for="first_name">First Name:</label>
-            <input type="text" name="first_name" value="<?= !empty($shipping['first_name']) ? $shipping['first_name'] : '' ?>"/>
+            <input type="text" name="shipping_first_name" value="<?= !empty($shipping['first_name']) ? $shipping['first_name'] : '' ?>"/>
 
             <label for="city">City:</label>
             <input type="text" name="city" value="<?= !empty($shipping['city']) ? $shipping['city'] : '' ?>"></textarea>
 
             <label for="last_name">Last Name:</label>
-            <input type="text" name="last_name" value="<?= !empty($shipping['last_name']) ? $shipping['last_name'] : '' ?>" />
+            <input type="text" name="shipping_last_name" value="<?= !empty($shipping['last_name']) ? $shipping['last_name'] : '' ?>" />
 
             <label for="state">State:</label>
             <input type="text" name="state" value="<?= !empty($shipping['state']) ? $shipping['state'] : '' ?>">
@@ -136,13 +139,13 @@
             <input type="text" name="zipcode" value="<?= !empty($billing['zipcode']) ? $billing['zipcode'] : '' ?>">
 
             <label for="address1">Address:</label>
-            <textarea name="address1"><?= !empty($billing['address']) ? $billing['address'] : '' ?></textarea>
+            <textarea name="billing_address1"><?= !empty($billing['address']) ? $billing['address'] : '' ?></textarea>
 
             <label for="card">Card:</label>
             <input type="text" name="card" value="<?= !empty($billing['card_name']) ? $billing['card_name'] : '' ?>">
 
             <label for="address">Address 2:</label>
-            <textarea name="address2"><?= !empty($billing['address_2']) ? $billing['address_2'] : '' ?></textarea>
+            <textarea name="billing_address2"><?= !empty($billing['address_2']) ? $billing['address_2'] : '' ?></textarea>
 
             <label for="security_code">Card Security Code:</label>
             <input type="password" name="security_code" value="<?= !empty($billing['security_code']) ? $billing['security_code'] : '' ?>">
@@ -154,6 +157,8 @@
             <label for="expiration">Card Expiration:</label>
             <input type="month" name="expiration">
 
+
+            <input type="hidden" name="<?= $this->security->get_csrf_token_name() ?>" value="<?= $this->security->get_csrf_hash() ?>">
             <input type="submit" id="pay_button" value="Pay">
         </form>
 

@@ -117,7 +117,8 @@ class Customers extends CI_Controller {
 
 	public function product_details($product_id) {
 		$product = $this->Product->get_product_by_id($product_id);
-		$this->load->view("/customers/product_details", array("product" => $product));
+		$similar_items = $this->Product->get_similar_items($product_id, $product['category_name']);
+		$this->load->view("/customers/product_details", array("product" => $product, "similar_items" => $similar_items));
 	}
 
 	public function order_history() {

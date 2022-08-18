@@ -75,6 +75,7 @@
                 <img class="mini-image" src="<?= base_url() ?>assets/img/magnifying_glass.png"/>
             </figure>
             <p><?= $product['description'] ?></p>
+
             <form action="<?= base_url() ?>add_to_cart" method="POST">
                 <span orig-price="<?= $product['price'] ?>">($<?= $product['price'] ?>)</span>
                 <input type="number" name="quantity" value="1" min="1">
@@ -89,48 +90,19 @@
         <!-- Relate Products -->
         <footer>
             <h2>Similar Items</h2>
+<?php
+    foreach($similar_items as $similar_item) {
+?>
             <figure>
                 <a href="">
                     <img src="<?= base_url() ?>assets/img/magnifying_glass.png"/>
-                    <p>$12.99</p>
-                    <figcaption>Magnifying Glass</figcaption>
+                    <p>$<?= $similar_item['price'] ?></p>
+                    <figcaption><?= $similar_item['product_name'] ?></figcaption>
                 </a>
             </figure>
-            <figure>
-                <a href="./product_details.html">
-                    <img src="<?= base_url() ?>assets/img/magnifying_glass.png"/>
-                    <p>$13.99</p>
-                    <figcaption>Magnifying Glass</figcaption>
-                </a>
-            </figure>
-            <figure>
-                <a href="./product_details.html">
-                    <img src="<?= base_url() ?>assets/img/magnifying_glass.png"/>
-                    <p>$10.99</p>
-                    <figcaption>Magnifying Glass</figcaption>
-                </a>
-            </figure>
-            <figure>
-                <a href="./product_details.html">
-                    <img src="<?= base_url() ?>assets/img/magnifying_glass.png"/>
-                    <p>$101.99</p>
-                    <figcaption>Magnifying Glass</figcaption>
-                </a>
-            </figure>
-            <figure>
-                <a href="./product_details.html">
-                    <img src="<?= base_url() ?>assets/img/magnifying_glass.png"/>
-                    <p>$2.99</p>
-                    <figcaption>Magnifying Glass</figcaption>
-                </a>
-            </figure>
-            <figure>
-                <a href="./product_details.html">
-                    <img src="<?= base_url() ?>assets/img/magnifying_glass.png"/>
-                    <p>$3.99</p>
-                    <figcaption>Magnifying Glass</figcaption>
-                </a>
-            </figure>
+<?php
+    }
+?>
         </footer>
 
     </body>
